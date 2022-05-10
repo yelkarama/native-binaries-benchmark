@@ -21,16 +21,14 @@ cd target/native-image
 jar -xvf ../$JAR >/dev/null 2>&1
 cp -R META-INF BOOT-INF/classes
 
-LIBPATH=`find BOOT-INF/lib | tr '\n' ':'`
+LIBPATH=$(find BOOT-INF/lib | tr '\n' ':')
 CP=BOOT-INF/classes:$LIBPATH
 
-GRAALVM_VERSION=`native-image --version`
+GRAALVM_VERSION=$(native-image --version)
 echo "Compiling $ARTIFACT with $GRAALVM_VERSION"
 { time native-image \
   --verbose \
-  --enable-all-security-services \
   -H:Name=$ARTIFACT \
-  -H:+TraceClassInitialization \
   -H:+ReportExceptionStackTraces \
   -H:+RemoveSaturatedTypeFlows \
   --initialize-at-run-time=java.sql.DriverManager \
